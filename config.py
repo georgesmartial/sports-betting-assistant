@@ -1,2 +1,8 @@
-API_KEY = "87a425b628bb325c735a5d482222b7cc"
-ODDS_API_URL = "https://api.the-odds-api.com/v4/sports"
+
+
+## ✅ Step 4: Example `config.py`
+
+DATA_PATH = "data/processed/match_data.csv"
+MODEL_PATH = "models/trained/soccer_model.pkl"
+SPORT = "soccer"
+ODDS_API_URL = "https://api.example.com/odds "
