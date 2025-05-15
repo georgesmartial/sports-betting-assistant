@@ -1,24 +1,60 @@
-from modules import tracker, bankroll
+from modules import tracker, bankroll, odds_api
 
 def main():
     while True:
-        print("\n--- Sports Betting Assistant ---")
-        print("1. View bankroll")
-        print("2. Add a bet")
-        print("3. Predict match outcome")
-        print("4. Exit")
+        # Main menu
+        print("\n" + "═"*50)
+        print("        🎯 SPORTS BETTING ASSISTANT 🎯")
+        print("═"*50)
+        print("\n1. 🏆  Select sport and view live odds")
+        print("2. 🚪  Exit")
+        print("\n" + "═"*50)
 
-        choice = input("Select an option: ")
+        choice = input("\nSelect an option (1-2): ")
         if choice == "1":
-            bankroll.view_bankroll()
+            print("\n" + "━"*40)
+            print("         AVAILABLE SPORTS")
+            print("━"*40)
+            print("\n1. ⚽  Soccer")
+            print("\n" + "━"*40)
+
+            sport_choice = input("\nSelect sport (1): ")
+
+            if sport_choice != "1":
+                print("\n❌ Only Soccer is supported currently.")
+                continue
+
+            from modules.odds_api import COUNTRY_LEAGUES
+
+            print("\n" + "━"*40)
+            print("        AVAILABLE COUNTRIES")
+            print("━"*40)
+
+            for idx, country in enumerate(COUNTRY_LEAGUES.keys(), 1):
+                print(f"{idx}. 🌍  {country}")
+
+            country_choice = input("\nSelect country (1-6): ")
+
+            try:
+                country_index = int(country_choice) - 1
+                selected_country = list(COUNTRY_LEAGUES.keys())[country_index]
+                sport_key = COUNTRY_LEAGUES[selected_country]
+                sport_name = f"Soccer - {selected_country}"
+            except (ValueError, IndexError):
+                print("\n❌ Invalid country choice!")
+                continue
+
+            print(f"\n📊 Fetching live odds for {sport_name}...")
+            matches = odds_api.fetch_odds(sport_key)
+
+            if matches:
+                pass  # fetch_odds handles match display and detail selection internally
+        
         elif choice == "2":
-            tracker.add_bet()
-        elif choice == "3":
-            print("Prediction engine coming soon...")
-        elif choice == "4":
+            print("\n👋 Goodbye!")
             break
         else:
-            print("Invalid option.")
+            print("\n❌ Invalid option!")
 
 if __name__ == "__main__":
     main()
